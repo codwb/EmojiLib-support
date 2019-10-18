@@ -2,12 +2,12 @@ package com.cwb.libemoji.ui
 
 import android.content.Context
 import android.os.Handler
+import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.LinearLayout
-import androidx.viewpager.widget.ViewPager
 import com.cwb.libemoji.FaceCenter
 import com.cwb.libemoji.R
 import com.cwb.libemoji.adapter.FaceGVAdapter
