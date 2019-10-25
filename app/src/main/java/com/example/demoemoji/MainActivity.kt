@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.widget.EditText
 import com.cwb.libemoji.FaceCenter
 import com.cwb.libemoji.bean.FaceBean
 import com.cwb.libemoji.callback.OnFaceClickListener
@@ -57,7 +59,8 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 if (s == null) return
                 val text = s.toString()
-                FaceCenter.showFace(tv_face, text, 30f)
+                //FaceCenter.showFace(tv_face, text, 30f)
+                tv_face.text = text
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -69,6 +72,14 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        edit_input.setOnKeyListener { v, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                FaceCenter.deleteFace(v as EditText, 30f)
+                true
+            } else
+                false
+        }
 
     }
 }
