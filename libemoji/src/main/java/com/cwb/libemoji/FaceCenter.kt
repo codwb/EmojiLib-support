@@ -82,29 +82,40 @@ object FaceCenter {
 
     /**
      *  点击删除按钮删除表情
+     *
+     * @param view 需要展示表情的view
+     * @param size 表情图标大小(dp)
      */
     fun deleteFace(view: TextView, size: Float) {
         val text = view.text.toString()
         if (text.isEmpty()) return
         val selection = view.selectionStart
+        val result: String
+        //光标新的位置
+        var index = 0
         if (view is EditText && selection < text.length) {
             val input = text.substring(0, selection)
             val last = text.substring(selection, text.length)
-            val result = "${delete(input)}${last}"
-            //重新加载表情
-            show(view, size, result)
-            //重新设置光标位置
-            view.setSelection(result.length - last.length)
+            result = "${delete(input)}${last}"
+            index = result.length - last.length
         } else if (view is EditText && selection == text.length) {
-            val result = delete(text)
-            show(view, size, result)
-            view.setSelection(result.length)
+            result = delete(text)
+            index = result.length
         } else {
-            val result = delete(text)
-            show(view, size, result)
+            result = delete(text)
+        }
+        //展示表情
+        show(view, size, result)
+
+        if (view is EditText) {
+            //重新设置光标位置
+            view.setSelection(index)
         }
     }
 
+    /**
+     *  textView展示表情
+     */
     private fun show(view: TextView, size: Float, content: String) {
         val context = view.context
         val sb = SpannableStringBuilder(content)
@@ -130,6 +141,10 @@ object FaceCenter {
         view.text = sb
     }
 
+    /**
+     *  删除逻辑
+     *  @return 处理后的字符串
+     */
     private fun delete(text: String): String {
         if (text.isEmpty()) return ""
         if (text.endsWith("]")) {
