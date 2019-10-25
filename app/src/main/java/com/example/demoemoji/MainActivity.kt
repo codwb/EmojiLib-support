@@ -3,6 +3,8 @@ package com.example.demoemoji
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import com.cwb.libemoji.FaceCenter
 import com.cwb.libemoji.bean.FaceBean
 import com.cwb.libemoji.callback.OnFaceClickListener
@@ -14,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //使用fragment
         /*
-         //使用fragment
          val beginTransaction = supportFragmentManager.beginTransaction()
           beginTransaction.replace(
               R.id.frame,
@@ -34,20 +36,39 @@ class MainActivity : AppCompatActivity() {
 
          */
 
+        //使用FaceLayout
         face_layout.setOnFaceClickListener(object : OnFaceClickListener {
 
             @SuppressLint("SetTextI18n")
             override fun onClick(bean: FaceBean) {
-                val text = "${tv_face.text} ${bean.content}"
-                FaceCenter.handlerFaceText(tv_face, text, 30f)
+                val text = "${tv_face.text}${bean.content}"
+                FaceCenter.showFace(tv_face, text, 30f)
+                FaceCenter.showFace(edit_input, text, 30f)
             }
 
             override fun onDelete() {
                 FaceCenter.deleteFace(tv_face, 30f)
+                FaceCenter.deleteFace(edit_input, 30f)
             }
 
         })
 
+        edit_input.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s == null) return
+                val text = s.toString()
+                FaceCenter.showFace(tv_face, text, 30f)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+        })
 
     }
 }
